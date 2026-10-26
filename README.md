@@ -6,4 +6,4 @@ Open `index.html` directly, or serve the directory with `python -m http.server 8
 
 The site has no backend. Contact links open the visitor's email client or phone dialer. The contact section includes an embedded Google map and a directions link.
 
-The sea-shipment phone numbers on the source page are formatted ambiguously (`+65 9777 232265 / +9628 3882`). The site interprets this as shared `+65 9777 2322` plus ocean-team `+65 9628 3882`, based on the clearly printed air-team shared number. Confirm the ocean-team number before publishing.
+The sea-shipment phone formatting on the original source page is ambiguous. Confirm the ocean-team number before publishing future contact changes.
