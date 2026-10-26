@@ -54,6 +54,37 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 window.addEventListener('resize', updateActiveNav);
 updateActiveNav();
+
+// A direct URL such as /#contact can scroll before web fonts finish loading.
+// Realign the section once its final layout is known.
+const initialHash = window.location.hash.slice(1);
+const initialTarget = initialHash ? document.getElementById(decodeURIComponent(initialHash)) : null;
+if (initialTarget && initialHash !== 'top') {
+  window.addEventListener('load', () => {
+    Promise.resolve(document.fonts?.ready).then(() => {
+      setTimeout(() => {
+        if (window.location.hash.slice(1) !== initialHash) {
+          document.documentElement.style.scrollBehavior = '';
+          return;
+        }
+        const scrollPadding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+        const targetY = initialTarget.getBoundingClientRect().top + window.scrollY - scrollPadding;
+        window.scrollTo(0, Math.max(0, targetY));
+        requestAnimationFrame(() => { document.documentElement.style.scrollBehavior = ''; });
+      }, 200);
+    });
+  }, { once: true });
+} else if (initialHash) {
+  window.addEventListener('load', () => { document.documentElement.style.scrollBehavior = ''; }, { once: true });
+}
+
+// A useful state while Google's embedded map is still loading.
+const contactMap = document.querySelector('.contact-map');
+contactMap?.querySelector('iframe')?.addEventListener('load', () => {
+  contactMap.classList.add('map-loaded');
+  const loadingMessage = contactMap.querySelector('.map-loading');
+  if (loadingMessage) loadingMessage.hidden = true;
+});
 // The logo is the home control on this single-page site. Scroll to the true
 // beginning, including the slim information bar above the sticky header.
 document.querySelectorAll('.brand, .back-top').forEach(link => {
