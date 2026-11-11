@@ -26,7 +26,7 @@ window.addEventListener('resize', () => {
 // Keep the main navigation oriented to the section currently being read.
 const sectionNavMap = {
   about: 'about', services: 'services', 'sea-details': 'services',
-  'air-details': 'services', containers: 'containers', gallery: 'gallery',
+  'air-details': 'services', containers: 'containers', incoterms: 'incoterms', gallery: 'gallery',
   network: 'network', contact: 'contact'
 };
 const navSections = [...document.querySelectorAll('main section[id]')]
@@ -85,6 +85,20 @@ contactMap?.querySelector('iframe')?.addEventListener('load', () => {
   const loadingMessage = contactMap.querySelector('.map-loading');
   if (loadingMessage) loadingMessage.hidden = true;
 });
+
+// Let a standard mouse wheel reveal the Incoterms columns. At either edge,
+// leave the wheel event alone so visitors can continue down the page.
+const incotermsScroll = document.querySelector('.incoterms-scroll');
+incotermsScroll?.addEventListener('wheel', event => {
+  if (event.ctrlKey || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+  const maxScroll = incotermsScroll.scrollWidth - incotermsScroll.clientWidth;
+  if (maxScroll <= 0 || event.deltaY === 0) return;
+  const multiplier = event.deltaMode === 1 ? 24 : event.deltaMode === 2 ? incotermsScroll.clientWidth : 1;
+  const next = Math.max(0, Math.min(maxScroll, incotermsScroll.scrollLeft + event.deltaY * multiplier));
+  if (Math.abs(next - incotermsScroll.scrollLeft) < 1) return;
+  incotermsScroll.scrollLeft = next;
+  event.preventDefault();
+}, { passive: false });
 // The logo is the home control on this single-page site. Scroll to the true
 // beginning, including the slim information bar above the sticky header.
 document.querySelectorAll('.brand, .back-top').forEach(link => {
@@ -109,6 +123,7 @@ if ('IntersectionObserver' in window && !prefersReducedMotion.matches) {
     '.air-image', '.air-copy h2',
     '.container-section .section-top > *', '.container-section .row > div',
     '.equipment-extra .row > div', '.equipment-air .section-heading',
+    '.incoterms-intro > *', '.incoterms-key', '.incoterms-scroll',
     '.gallery-section .section-top > *', '.gallery-group-title', '.gallery-item',
     '.network .row > div',
     '.contact-heading',
