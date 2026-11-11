@@ -339,5 +339,3 @@ body.lightbox-open{overflow:hidden}
 .incoterms-notes a{color:#3d57cf;font-weight:700;text-decoration:underline;text-underline-offset:3px}
 .incoterms-notes a:hover{color:#1e2864}
 @media(max-width:767px){.incoterms-intro,.incoterms-notes{grid-template-columns:1fr;gap:18px}.incoterms-swipe .wheel-hint{display:none}.incoterms-swipe .touch-hint{display:inline}.incoterms-table{min-width:1460px}.incoterms-table thead th:first-child,.incoterms-table tbody th{min-width:145px}}
-.team-emails{display:flex;flex-direction:column;align-items:flex-start;gap:5px;margin:8px 0 10px}
-.team-emails a{line-height:1.4}
